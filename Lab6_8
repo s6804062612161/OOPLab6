@@ -1,0 +1,38 @@
+class RectangleGeom {
+    double width, height, x, y;
+    public RectangleGeom(double width, double height, double x, double y) {
+        this.width = width;
+        this.height = height;
+        this.x = x;
+        this.y = y;
+    }
+}
+
+class LineGeom {
+    double x1, y1, x2, y2;
+    public LineGeom(double x1, double y1, double x2, double y2) {
+        this.x1 = x1;
+        this.y1 = y1;
+        this.x2 = x2;
+        this.y2 = y2;
+    }
+}
+
+public class GeometryUtils {
+    public static int contains(LineGeom a, RectangleGeom b) {
+        boolean pt1In = (a.x1 >= b.x && a.x1 <= b.x + b.width && a.y1 <= b.y && a.y1 >= b.y - b.height);
+        boolean pt2In = (a.x2 >= b.x && a.x2 <= b.x + b.width && a.y2 <= b.y && a.y2 >= b.y - b.height);
+        return (pt1In && pt2In) ? 1 : 0;
+    }
+
+    public static double distance(LineGeom a, RectangleGeom b) {
+        double lineMidX = (a.x1 + a.x2) / 2.0;
+        double lineMidY = (a.y1 + a.y2) / 2.0;
+        double rectMidX = b.x + b.width / 2.0;
+        double rectMidY = b.y - b.height / 2.0;
+
+        double dx = lineMidX - rectMidX;
+        double dy = lineMidY - rectMidY;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+}
