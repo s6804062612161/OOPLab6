@@ -1,0 +1,83 @@
+import java.util.Date;
+
+class DateCustom {
+    private int day;
+    private String month;
+    private int year;
+
+    public DateCustom() {}
+    public DateCustom(int day, String month, int year) {
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+    public int getYear() { return year; }
+}
+
+class Person {
+    private String name;
+    private String surname;
+    private int age;
+    private DateCustom bDate;
+
+    public Person() {}
+    public Person(String name, String surname, int age, DateCustom bDate) {
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
+        this.bDate = bDate;
+    }
+}
+
+class AccountExt {
+    protected int id;
+    protected double balance;
+    protected double annualInterestRate;
+    protected DateCustom dateCreated;
+    protected Person objPerson;
+
+    public AccountExt(int id, double balance, double annualInterestRate, Person person, DateCustom dateCreated) {
+        this.id = id;
+        this.balance = balance;
+        this.annualInterestRate = annualInterestRate;
+        this.objPerson = person;
+        this.dateCreated = dateCreated;
+    }
+
+    public void withdraw(double amount) { balance -= amount; }
+    public void deposit(double amount) { balance += amount; }
+    public double getBalance() { return balance; }
+    public double getMonthlyInterest() { return balance * (annualInterestRate / 12 / 100); }
+
+    public void transferMoney(AccountExt acc1, double amount) {
+        this.withdraw(amount);
+        acc1.deposit(amount);
+    }
+}
+
+class SavingAccount extends AccountExt {
+    public SavingAccount(int id, double balance, double annualInterestRate, Person person, DateCustom dateCreated) {
+        super(id, balance, annualInterestRate, person, dateCreated);
+    }
+
+    @Override
+    public void transferMoney(AccountExt acc1, double amount) {
+        double total = amount + 20; // ค่าธรรมเนียม 20 บาท
+        if (balance >= total) {
+            this.withdraw(total);
+            acc1.deposit(amount);
+            System.out.println("Transfer successful with 20 THB fee.");
+        }
+    }
+}
+
+class FixAccount extends AccountExt {
+    public FixAccount(int id, double balance, double annualInterestRate, Person person, DateCustom dateCreated) {
+        super(id, balance, annualInterestRate, person, dateCreated);
+    }
+
+    @Override
+    public void transferMoney(AccountExt acc1, double amount) {
+        System.out.println("Error: FixAccount cannot transfer money!");
+    }
+}
